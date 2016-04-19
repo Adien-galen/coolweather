@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -115,6 +116,7 @@ public class ChooseAreaActivity extends Activity {
 			currentLevel=LEVEL_CITY;
 		}else{
 			queryFromServer(selectedProvince.getProvinceCode(),"city");
+			Log.d("provinceCode", selectedProvince.getProvinceCode());
 		}
 	}
 	
@@ -200,7 +202,7 @@ public class ChooseAreaActivity extends Activity {
 		if(progressDialog==null){
 			progressDialog=new ProgressDialog(this);
 			progressDialog.setMessage("ÕýÔÚ¼ÓÔØ.....");
-			progressDialog.setCanceledOnTouchOutside(false);
+			progressDialog.setCanceledOnTouchOutside(true);
 		}
 		progressDialog.show();
 	}
