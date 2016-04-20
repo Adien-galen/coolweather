@@ -66,7 +66,6 @@ public class ChooseAreaActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -96,7 +95,7 @@ public class ChooseAreaActivity extends Activity {
 				}else if(currentLevel==LEVEL_CITY){
 					selectedCity =cityList.get(position);
 					queryCounties();
-				}else if(currentLevel==LEVEL_PROVINCE){
+				}else if(currentLevel==LEVEL_COUNTY){
 					String countyCode = countyList.get(position).getCountyCode();
 					Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
 					intent.putExtra("county_code", countyCode);
@@ -127,8 +126,10 @@ public class ChooseAreaActivity extends Activity {
 	}
 
 	/*查询全国所有的市，优先从数据库查询，如果没有查询到再去服务器上查询*/
-	protected void queryCities() {
+	private void queryCities() {
 		cityList =coolWeatherDB.loadCities(selectedProvince.getId());
+//		int id = selectedProvince.getId();
+//		String code = selectedProvince.getProvinceCode();
 		if(cityList.size()>0){
 			dataList.clear();
 			for(City city:cityList){
@@ -140,12 +141,11 @@ public class ChooseAreaActivity extends Activity {
 			currentLevel=LEVEL_CITY;
 		}else{
 			queryFromServer(selectedProvince.getProvinceCode(),"city");
-			Log.d("provinceCode", selectedProvince.getProvinceCode());
 		}
 	}
 	
 	/*查询全国所有的县，优先从数据库查询，如果没有查询到再去服务器上查询*/
-	protected void queryCounties() {
+	private void queryCounties() {
 		countyList = coolWeatherDB.loadCounties(selectedCity.getId());
 		if(countyList.size()>0){
 			dataList.clear();
@@ -226,7 +226,7 @@ public class ChooseAreaActivity extends Activity {
 		if(progressDialog==null){
 			progressDialog=new ProgressDialog(this);
 			progressDialog.setMessage("正在加载.....");
-			progressDialog.setCanceledOnTouchOutside(true);
+			progressDialog.setCanceledOnTouchOutside(false);
 		}
 		progressDialog.show();
 	}
